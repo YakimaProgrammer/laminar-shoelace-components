@@ -16,7 +16,7 @@ ThisBuild / dynver := {
 
 ThisBuild / scalaVersion := Versions.Scala_3
 
-lazy val generateShoelace = taskKey[Unit]("generates the component definitions")
+lazy val generateShoelace = taskKey[List[File]]("generates the component definitions")
 
 lazy val sl = project
   .in(file("."))
@@ -26,10 +26,11 @@ lazy val sl = project
       new ShoelaceGenerator(
         onlineSourceRoot = "https://github.com/raquo/laminar-shoelace-components/blob/master",
         customElementsJsonPath = "node_modules/@shoelace-style/shoelace/dist/custom-elements.json",
-        baseOutputDirectoryPath = "src/main/scala/com/raquo/laminar/shoelace/sl",
+        baseOutputDirectoryPath = (Compile / sourceManaged).value.getAbsolutePath(),
         baseOutputPackagePath = "com.raquo.laminar.shoelace.sl"
       ).generate()
-    }
+    },
+    Compile / sourceGenerators += generateShoelace.taskValue
   )
   .settings(
     libraryDependencies ++= List(
@@ -47,7 +48,7 @@ lazy val sl = project
       val sourcesOptionName = if (scalaVersion.value.startsWith("2.")) "-P:scalajs:mapSourceURI" else "-scalajs-mapSourceURI"
 
       s"${sourcesOptionName}:$localSourcesPath->$remoteSourcesPath"
-    },
+    }
   )
   .settings(
     name := "Laminar Shoelace",
