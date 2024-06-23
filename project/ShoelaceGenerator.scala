@@ -150,7 +150,7 @@ class ShoelaceGenerator(
         fileName = fileName,
         fileContent = output
       )
-    }
+    } :+ eventTypes
   }
 
 
