@@ -1,4 +1,5 @@
-import VersionHelper.{versionFmt, fallbackVersion}
+import VersionHelper.fallbackVersion
+import VersionHelper.versionFmt
 
 // Lets me depend on Maven Central artifacts immediately without waiting
 resolvers ++= Resolver.sonatypeOssRepos("public")
@@ -26,7 +27,7 @@ lazy val sl = project
       new ShoelaceGenerator(
         onlineSourceRoot = "https://github.com/raquo/laminar-shoelace-components/blob/master",
         customElementsJsonPath = "node_modules/@shoelace-style/shoelace/dist/custom-elements.json",
-        baseOutputDirectoryPath = (Compile / sourceManaged).value.getAbsolutePath(),
+        baseOutputDirectoryPath = (Compile / sourceManaged).value.getAbsolutePath() + "/scala/com/raquo/laminar/shoelace/sl",
         baseOutputPackagePath = "com.raquo.laminar.shoelace.sl"
       ).generate()
     },
