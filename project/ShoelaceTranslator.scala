@@ -135,7 +135,6 @@ class ShoelaceTranslator(
     (tagName, propName, jsTypes) match {
       // #nc #nc #nc vvvvvv TODO
       case ("sl-color-picker", "swatches", _) => true // Composite List[String] separated by ; IF used as an attribute. Property is an array, but not reflected.
-      //case ("sl-format-date" | "sl-relative-time", "date", _) => true // Date | String - convert date with `date.toISOString()` - For MVP, just make an attribute, and a codec for date?
       // case ("sl-select", "value" | "defaultValue", _) => true // String | String[]. Space-delimited string in html attr. Use `value` vs `values`?
       // #nc #nc #nc ^^^^^ TODO
       // Don't want those props, we have (non-reflected) attributes for them.
