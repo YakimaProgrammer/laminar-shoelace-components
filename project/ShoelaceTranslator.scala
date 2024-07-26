@@ -593,9 +593,11 @@ class ShoelaceTranslator(
       //  println(s"WARNING: scalaAttrInputType: Multi-element input not supported for attr `${attr.attrName}` in tag `${tagName}`.")
       //  "Element" // #nc or Element[], but how to express that...
     } else {
-      printableTypes.toSet match {
-        case s if s == Set(Def.JsCustomType("Date"), Def.JsStringType) => "js.Date" // I'm mapping from a JS Dom type to the Scala type. Here, I only want to work with `js.Date`s in Scala, not a union of `js.Date | String`
-        case _ => throw new Exception(s"ERROR: scalaPropInputTypeStr does not support multiple printable types in prop `${prop.propName}` in tag `${tagName}`: ${printableTypes.mkString(", ")}")
+      if (printableTypes.toSet == Set(Def.JsCustomType("Date"), Def.JsStringType)) {
+        // I'm mapping from a JS Dom type to the Scala type. Here, I only want to work with `js.Date`s in Scala, not a union of `js.Date | String`
+        "js.Date"
+      } else {
+        throw new Exception(s"ERROR: scalaPropInputTypeStr does not support multiple printable types in prop `${prop.propName}` in tag `${tagName}`: ${printableTypes.mkString(", ")}")
       }
     }
   }
