@@ -9,7 +9,7 @@ import com.raquo.laminar.keys.DerivedStyleProp
 import com.raquo.laminar.modifiers.KeySetter
 import com.raquo.laminar.modifiers.KeySetter.StyleSetter
 import org.scalajs.dom
-import scala.scalajs.{js as sjs}
+import scala.scalajs.js
 
 trait CommonTypes {
 
@@ -44,7 +44,7 @@ trait CommonTypes {
 
   protected def asIsProp[V](name: String): HtmlProp[V, _] = L.htmlProp(name, AsIsCodec[V]())
 
-  protected def dateProp(name: String): HtmlProp[sjs.Date, _] = L.htmlProp(name, DateAsStringCodec)
+  protected def dateProp(name: String): HtmlProp[js.Date, _] = L.htmlProp(name, DateAsStringCodec)
 
   protected def boolAttr(name: String): HtmlAttr[Boolean] = {
     L.htmlAttr(name, BooleanAsAttrPresenceCodec)
