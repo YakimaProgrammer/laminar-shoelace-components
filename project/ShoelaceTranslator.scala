@@ -595,7 +595,7 @@ class ShoelaceTranslator(
     } else {
       if (printableTypes.toSet == Set(Def.JsCustomType("Date"), Def.JsStringType)) {
         // I'm mapping from a JS Dom type to the Scala type. Here, I only want to work with `js.Date`s in Scala, not a union of `js.Date | String`
-        "js.Date"
+        "js.Date | String"
       } else {
         throw new Exception(s"ERROR: scalaPropInputTypeStr does not support multiple printable types in prop `${prop.propName}` in tag `${tagName}`: ${printableTypes.mkString(", ")}")
       }
