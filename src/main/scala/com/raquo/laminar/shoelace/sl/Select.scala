@@ -29,7 +29,7 @@ object Select extends WebComponent("sl-select") with ControlledInput {
   type Ref = SelectComponent with dom.HTMLElement
 
   override protected lazy val tag: CustomHtmlTag[Ref] = {
-    tagWithControlledInput(value, initial = "", onInput)
+    tagWithControlledInput(value, initial = Array(), onInput)
   }
 
 
@@ -140,7 +140,7 @@ object Select extends WebComponent("sl-select") with ControlledInput {
     * value attribute will be a space-delimited list of values based on the options selected, and the value property will
     * be an array. **For this reason, values must not contain spaces.**
     */
-  lazy val value: HtmlProp[String, _] = stringProp("value")
+  lazy val value: HtmlProp[Array[String], _] = stringSeperatedArrayProp(" ")("value")
 
 
   // -- Slots --
@@ -237,7 +237,7 @@ object Select extends WebComponent("sl-select") with ControlledInput {
       * value attribute will be a space-delimited list of values based on the options selected, and the value property will
       * be an array. **For this reason, values must not contain spaces.**
       */
-    var value: String
+    var value: String | js.Array[String]
 
     /** The select's size. */
     var size: String

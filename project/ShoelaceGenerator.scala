@@ -65,16 +65,18 @@ class ShoelaceGenerator(
     }
   }
 
-  def propImplName(scalaTypeStr: String): String = {
-    scalaTypeStr match {
-      case "Boolean" => "boolProp"
-      case "String" => "stringProp"
-      case "Int" => "intProp"
-      case "Double" => "doubleProp"
-      case "js.Date | String" => "asIsProp"
-      case "dom.MutationObserver" | "js.Array[js.Object]" => "asIsProp"
+  def propImplName(tagName: String, scalaTypeStr: String): String = {
+    (tagName, scalaTypeStr) match {
+      case (_, "Boolean") => "boolProp"
+      case (_, "String") => "stringProp"
+      case (_, "Int") => "intProp"
+      case (_, "Double") => "doubleProp"
+      case ("sl-format-date" | "sl-relative-time", "js.Date | String") => "asIsProp"
+      case ("sl-color-picker", "Array[String]") => "stringSeperatedArrayProp(\";\")"
+      case ("sl-select", "Array[String]") => "stringSeperatedArrayProp(\" \")"
+      case (_, "dom.MutationObserver" | "js.Array[js.Object]") => "asIsProp"
       case _ =>
-        println(s"PROP ...No impl defined for scala type `${scalaTypeStr}`, trying `htmlProp` for now.")
+        println(s"PROP ...No impl defined for scala type `${scalaTypeStr}` on `${tagName}`, trying `htmlProp` for now.")
         "htmlProp"
     }
   }
@@ -372,7 +374,7 @@ class ShoelaceGenerator(
       val scalaInputTypeStr = st.scalaPropInputTypeStr(prop, element.tagName)
       val propImpl = st.useUiLibraryProp(element.tagName, prop.propName, prop.jsTypes) match {
         case Some(uiLibraryScalaName) => s"L.$uiLibraryScalaName"
-        case None => s"${propImplName(scalaInputTypeStr)}(${repr(prop.propName)})"
+        case None => s"${propImplName(element.tagName, scalaInputTypeStr)}(${repr(prop.propName)})"
       }
       blockCommentLines(prop.description)
       line(s"lazy val ${prop.propName}: HtmlProp[${scalaInputTypeStr}, _] = ${propImpl}")

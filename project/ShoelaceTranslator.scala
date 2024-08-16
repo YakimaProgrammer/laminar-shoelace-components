@@ -71,7 +71,7 @@ class ShoelaceTranslator(
       case "sl-input" => Some(("value", "onInput", emptyStringRepr))
       case "sl-radio-group" => Some(("value", "onInput", emptyStringRepr)) // or onChange?
       // case "sl-range" => ??? // #TODO
-      case "sl-select" => Some(("value", "onInput", emptyStringRepr)) // or onChange? #TODO
+      case "sl-select" => Some(("value", "onInput", "Array()")) // or onChange? #TODO
       case "sl-switch" => Some(("checked", "onInput", falseRepr)) // or onChange?
       case "sl-textarea" => Some(("value", "onInput", emptyStringRepr))
       case _ => None
@@ -133,10 +133,6 @@ class ShoelaceTranslator(
     // "member has no documentation string" rule, but I haven't
     // checked for false positives.
     (tagName, propName, jsTypes) match {
-      // #nc #nc #nc vvvvvv TODO
-      case ("sl-color-picker", "swatches", _) => true // Composite List[String] separated by ; IF used as an attribute. Property is an array, but not reflected.
-      // case ("sl-select", "value" | "defaultValue", _) => true // String | String[]. Space-delimited string in html attr. Use `value` vs `values`?
-      // #nc #nc #nc ^^^^^ TODO
       // Don't want those props, we have (non-reflected) attributes for them.
       case (_, "defaultValue" | "defaultChecked", _) => true
       // Don't need this
@@ -565,7 +561,6 @@ class ShoelaceTranslator(
     val printableTypes = prop.jsTypes
       .map {
         case Def.JsStringConstantType(_) => Def.JsStringType
-        case Def.JsCustomType("string[]") => Def.JsStringType // #nc temporary fix for sl-select value
         case other => other
       }
       .distinct
@@ -595,6 +590,8 @@ class ShoelaceTranslator(
     } else {
       if (printableTypes.toSet == Set(Def.JsCustomType("Date"), Def.JsStringType)) {
         "js.Date | String"
+      } else if (printableTypes.toSet == Set(Def.JsCustomType("string[]"), Def.JsStringType)) {
+        "Array[String]"
       } else {
         throw new Exception(s"ERROR: scalaPropInputTypeStr does not support multiple printable types in prop `${prop.propName}` in tag `${tagName}`: ${printableTypes.mkString(", ")}")
       }
@@ -605,7 +602,6 @@ class ShoelaceTranslator(
     val printableTypes = jsTypes
       .map {
         case Def.JsStringConstantType(_) => Def.JsStringType
-        case Def.JsCustomType("string[]") => Def.JsStringType // #nc temporary fix for sl-select value
         case other => other
       }
       .map(scalaOutputType(context, _))
@@ -644,6 +640,7 @@ class ShoelaceTranslator(
         } else {
           t.substring(2) + ".Ref"
         }
+      case Def.JsCustomType("string[]") => "js.Array[String]"
       case t =>
         throw new Exception(s"WARNING: scalaPropOutputTypeStr: Unhandled js type `${t}` for ${context}.")
       //t.toString

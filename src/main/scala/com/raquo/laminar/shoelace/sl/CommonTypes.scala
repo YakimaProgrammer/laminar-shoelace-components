@@ -9,7 +9,8 @@ import com.raquo.laminar.keys.DerivedStyleProp
 import com.raquo.laminar.modifiers.KeySetter
 import com.raquo.laminar.modifiers.KeySetter.StyleSetter
 import org.scalajs.dom
-import scala.scalajs.js
+
+import com.raquo.laminar.codecs
 
 trait CommonTypes {
 
@@ -43,6 +44,9 @@ trait CommonTypes {
   protected def boolProp(name: String): HtmlProp[Boolean, _] = L.htmlProp(name, BooleanAsIsCodec)
 
   protected def asIsProp[V](name: String): HtmlProp[V, _] = L.htmlProp(name, AsIsCodec[V]())
+  
+  /** Maps a JavaScript `string | string[]` to an Array[String] in Scala. For use with components that have a value that is seperated by some charecter (for example, sl-select) */
+  protected def stringSeperatedArrayProp(sep: String)(name: String) = L.htmlProp(name, StringSeperatedArrayCodec(sep))
 
   protected def boolAttr(name: String): HtmlAttr[Boolean] = {
     L.htmlAttr(name, BooleanAsAttrPresenceCodec)

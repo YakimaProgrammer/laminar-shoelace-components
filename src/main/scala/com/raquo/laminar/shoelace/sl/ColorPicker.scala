@@ -120,6 +120,13 @@ object ColorPicker extends WebComponent("sl-color-picker") with ControlledInput 
     */
   lazy val value: HtmlProp[String, _] = L.value
 
+  /**
+    * One or more predefined color swatches to display as presets in the color picker. Can include any format the color
+    * picker can parse, including HEX(A), RGB(A), HSL(A), HSV(A), and CSS color names. Each color must be separated by a
+    * semicolon (`;`). Alternatively, you can pass an array of color values to this property using JavaScript.
+    */
+  lazy val swatches: HtmlProp[Array[String], _] = stringSeperatedArrayProp(";")("swatches")
+
 
   // -- Slots --
 
@@ -285,6 +292,13 @@ object ColorPicker extends WebComponent("sl-color-picker") with ControlledInput 
 
     /** By default, values are lowercase. With this attribute, values will be uppercase instead. */
     var uppercase: Boolean
+
+    /**
+      * One or more predefined color swatches to display as presets in the color picker. Can include any format the color
+      * picker can parse, including HEX(A), RGB(A), HSL(A), HSV(A), and CSS color names. Each color must be separated by a
+      * semicolon (`;`). Alternatively, you can pass an array of color values to this property using JavaScript.
+      */
+    var swatches: String | js.Array[String]
 
     /**
       * By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you
