@@ -44,7 +44,7 @@ trait CommonTypes {
   protected def boolProp(name: String): HtmlProp[Boolean, _] = L.htmlProp(name, BooleanAsIsCodec)
 
   protected def asIsProp[V](name: String): HtmlProp[V, _] = L.htmlProp(name, AsIsCodec[V]())
-  
+
   /** Maps a JavaScript `string | string[]` to an Array[String] in Scala. For use with components that have a value that is seperated by some charecter (for example, sl-select) */
   protected def stringSeperatedArrayProp(sep: String)(name: String) = L.htmlProp(name, StringSeperatedArrayCodec(sep))
 
