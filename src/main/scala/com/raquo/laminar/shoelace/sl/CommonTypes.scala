@@ -11,8 +11,38 @@ import com.raquo.laminar.modifiers.KeySetter.StyleSetter
 import org.scalajs.dom
 
 import com.raquo.laminar.codecs
+import scala.scalajs.js
+import scala.scalajs.js.JSConverters._
+import com.raquo.laminar.keys.EventProcessor
+import scala.reflect.ClassTag
+
+class EnhancedEventProp[Ev <: dom.Event](name: String) extends EventProp[Ev](name) {
+  protected val asEventProcessor = EventProcessor.empty(this)
+
+  def mapToValue[ScalaVal, JsVal: ClassTag](f: JsVal => ScalaVal): EventProcessor[Ev, ScalaVal] = {
+    asEventProcessor.mapRaw((ev, _) => {
+      ev
+        .target
+        .asInstanceOf[js.Dynamic]
+        .selectDynamic("value")
+        .asInstanceOf[js.UndefOr[Any]]
+        .toOption
+        .collect { case v if implicitly[ClassTag[JsVal]].runtimeClass.isInstance(v) =>
+                     f(v.asInstanceOf[JsVal])
+        }
+    })
+  }
+}
 
 trait CommonTypes {
+  lazy val StringSeperatedArrayCodec = (sep: String) => new Codec[Array[String], js.Array[String] | String] {
+    def encode(scalaValue: IterableOnce[String]): js.Array[String] | String = scalaValue.toJSArray
+    def encode(scalaValue: Array[String]) = encode(scalaValue.iterator)
+    def decode(domValue: js.Array[String] | String): Array[String] = domValue match {
+      case arr: js.Array[String] => arr.toArray
+      case str: String => str.split(sep)
+    }
+  }
 
   // #TODO[API] I should make use of Laminar helpers like lengthAutoStyle in StyleProps.scala,
   //  but they're defined together with the listings in the same traits, and I don't want
@@ -33,7 +63,7 @@ trait CommonTypes {
   //
   //private val stringAttrs = js.Dictionary[HtmlAttr[String]]()
 
-  protected def eventProp[Ev <: dom.Event](name: String): EventProp[Ev] = L.eventProp(name)
+  protected def eventProp[Ev <: dom.Event](name: String): EnhancedEventProp[Ev] = EnhancedEventProp(name)
 
   protected def stringProp(name: String): HtmlProp[String, _] = L.htmlProp(name, StringAsIsCodec)
 
