@@ -745,6 +745,21 @@ class ShoelaceTranslator(
     }
   }
 
+  def propCodec(tagName: String, scalaType: String): String = {
+    (tagName, scalaType) match {
+      case (_, "Boolean") => "BooleanAsIsCodec"
+      case (_, "String") => "StringAsIsCodec"
+      case (_, "Double") => "DoubleAsIsCodec"
+      case (_, "Int") => "IntAsIsCodec"
+      case ("sl-format-date" | "sl-relative-time", "Date | String") => "AsIsCodec"
+      case ("sl-color-picker", "Array[String]") => "StringSeperatedArrayCodec(\";\")"
+      case ("sl-select", "String | js.Array[String]") => "StringSeperatedArrayCodec(\" \")"
+      case _ =>
+        println(s"PROP CODEC ...No codec defined for scala type `$scalaType` on `$tagName`, trying `AsIsCodec` for now.")
+        "AsIsCodec"
+    }
+  }
+
   // --
 
   lazy val components: WebComponentsDef = WebComponentsDef(elements)

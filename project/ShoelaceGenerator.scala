@@ -287,6 +287,11 @@ class ShoelaceGenerator(
     if (supportsControlledInput) {
       line("import com.raquo.laminar.tags.CustomHtmlTag")
     }
+
+    val codec = element.allJsProperties.find(_.propName == "value").map(t => st.propCodec(element.tagName, st.scalaPropOutputType(element.tagName, t.jsTypes))).flatMap(_.split('(').headOption)
+    if (codec.isDefined) {
+      line(s"import com.raquo.laminar.codecs.${codec.get}")
+    }
     line("import org.scalajs.dom")
     line()
     line("import scala.scalajs.js")
@@ -331,11 +336,44 @@ class ShoelaceGenerator(
     line()
     line("// -- Events --")
     element.events.foreach { event =>
+      val prop = element.allJsProperties.find(_.propName == "value")
+      val codec = element.allJsProperties.find(_.propName == "value").map(t => st.propCodec(element.tagName, st.scalaPropOutputType(element.tagName, t.jsTypes)))
       val customEventTypeDef = event.customType
       val eventType = customEventTypeDef.map(_.scalaName).getOrElse(st.baseEventType)
+
+      val builder = new StringBuilder()
+      builder ++= "lazy val "
+      builder ++= event.scalaName
+      builder ++= ": "
+      if (codec.isEmpty) {
+        builder ++= "EventProp"
+      } else {
+        builder ++= "EnhancedEventProp"
+      }
+      builder += '['
+      builder ++= eventType
+      if (codec.isDefined) {
+        builder ++= ", "
+        builder ++= st.scalaPropInputTypeStr(prop.get, element.tagName)
+        builder ++= ", _"
+      }
+      builder ++= "] = "
+      if (codec.isEmpty) {
+        builder ++= "eventProp("
+      } else {
+        builder ++= "mappingEventProp("
+      }
+      builder ++= repr(event.domName)
+      if (codec.isDefined) {
+        builder ++= ", "
+        builder ++= codec.get
+        builder ++= ".decode"
+      }
+      builder += ')'
+
       line()
       blockCommentLines(event.description)
-      line(s"lazy val ${event.scalaName}: EventProp[${eventType}] = eventProp(${repr(event.domName)})")
+      line(builder.toString)
     }
   }
 
