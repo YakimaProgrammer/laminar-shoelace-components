@@ -4,6 +4,7 @@ import com.raquo.laminar.keys.{HtmlAttr, StyleProp}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js

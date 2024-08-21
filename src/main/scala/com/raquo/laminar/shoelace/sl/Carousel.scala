@@ -5,6 +5,7 @@ import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -31,7 +32,7 @@ object Carousel extends WebComponent("sl-carousel") {
   // -- Events --
 
   /** Emitted when the active slide changes. */
-  lazy val onSlideChange: EventProp[SlideChangeEvent] = eventProp("sl-slide-change")
+  lazy val onSlideChange: EnhancedEventProp[SlideChangeEvent, Int, Int] = eventProp("sl-slide-change", IntAsIsCodec.decode, "index")
 
 
   // -- Attributes --

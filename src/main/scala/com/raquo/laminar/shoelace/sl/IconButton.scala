@@ -2,6 +2,7 @@ package com.raquo.laminar.shoelace.sl
 
 import com.raquo.laminar.keys.{EventProp, HtmlAttr}
 import com.raquo.laminar.api.L
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -28,12 +29,6 @@ object IconButton extends WebComponent("sl-icon-button") {
 
 
   // -- Events --
-
-  /** Emitted when the icon button loses focus. */
-  lazy val onBlur: EventProp[dom.Event] = eventProp("sl-blur")
-
-  /** Emitted when the icon button gains focus. */
-  lazy val onFocus: EventProp[dom.Event] = eventProp("sl-focus")
 
 
   // -- Attributes --

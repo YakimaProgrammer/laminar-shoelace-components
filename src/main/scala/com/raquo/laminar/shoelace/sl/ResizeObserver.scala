@@ -4,6 +4,7 @@ import com.raquo.laminar.keys.{EventProp, HtmlAttr}
 import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -31,8 +32,6 @@ object ResizeObserver extends WebComponent("sl-resize-observer") {
 
   // -- Events --
 
-  /** Emitted when the element is resized. */
-  lazy val onResize: EventProp[ResizeEvent] = eventProp("sl-resize")
 
 
   // -- Attributes --

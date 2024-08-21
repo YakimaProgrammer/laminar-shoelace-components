@@ -3,6 +3,7 @@ package com.raquo.laminar.shoelace.sl
 import com.raquo.laminar.keys.{EventProp, HtmlAttr}
 import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -29,12 +30,6 @@ object Include extends WebComponent("sl-include") {
 
 
   // -- Events --
-
-  /** Emitted when the included file is loaded. */
-  lazy val onLoad: EventProp[dom.Event] = eventProp("sl-load")
-
-  /** Emitted when the included file fails to load due to an error. */
-  lazy val onError: EventProp[ErrorEvent] = eventProp("sl-error")
 
 
   // -- Attributes --

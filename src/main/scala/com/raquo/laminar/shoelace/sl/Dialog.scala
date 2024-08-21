@@ -5,6 +5,7 @@ import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -32,23 +33,8 @@ object Dialog extends WebComponent("sl-dialog") {
 
   // -- Events --
 
-  /** Emitted when the dialog opens. */
-  lazy val onShow: EventProp[dom.Event] = eventProp("sl-show")
-
-  /** Emitted after the dialog opens and all animations are complete. */
-  lazy val onAfterShow: EventProp[dom.Event] = eventProp("sl-after-show")
-
-  /** Emitted when the dialog closes. */
-  lazy val onHide: EventProp[dom.Event] = eventProp("sl-hide")
-
-  /** Emitted after the dialog closes and all animations are complete. */
-  lazy val onAfterHide: EventProp[dom.Event] = eventProp("sl-after-hide")
-
-  /** Emitted when the dialog opens and is ready to receive focus. Calling `event.preventDefault()` will prevent focusing and allow you to set it on a different element, such as an input. */
-  lazy val onInitialFocus: EventProp[dom.Event] = eventProp("sl-initial-focus")
-
   /** Emitted when the user attempts to close the dialog by clicking the close button, clicking the overlay, or pressing escape. Calling `event.preventDefault()` will keep the dialog open. Avoid using this unless closing the dialog will result in destructive behavior such as data loss. */
-  lazy val onRequestClose: EventProp[RequestCloseEvent] = eventProp("sl-request-close")
+  lazy val onRequestClose: EnhancedEventProp[RequestCloseEvent, String, String] = eventProp("sl-request-close", StringAsIsCodec.decode, "source")
 
 
   // -- Attributes --

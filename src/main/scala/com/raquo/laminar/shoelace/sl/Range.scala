@@ -4,6 +4,7 @@ import com.raquo.laminar.keys.{EventProp, HtmlProp, HtmlAttr, StyleProp}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -32,19 +33,19 @@ object Range extends WebComponent("sl-range") {
   // -- Events --
 
   /** Emitted when the control loses focus. */
-  lazy val onBlur: EventProp[dom.Event] = eventProp("sl-blur")
+  lazy val onBlur: EnhancedEventProp[dom.Event, Int, Int] = eventProp("sl-blur", IntAsIsCodec.decode)
 
   /** Emitted when an alteration to the control's value is committed by the user. */
-  lazy val onChange: EventProp[dom.Event] = eventProp("sl-change")
+  lazy val onChange: EnhancedEventProp[dom.Event, Int, Int] = eventProp("sl-change", IntAsIsCodec.decode)
 
   /** Emitted when the control gains focus. */
-  lazy val onFocus: EventProp[dom.Event] = eventProp("sl-focus")
+  lazy val onFocus: EnhancedEventProp[dom.Event, Int, Int] = eventProp("sl-focus", IntAsIsCodec.decode)
 
   /** Emitted when the control receives input. */
-  lazy val onInput: EventProp[dom.Event] = eventProp("sl-input")
+  lazy val onInput: EnhancedEventProp[dom.Event, Int, Int] = eventProp("sl-input", IntAsIsCodec.decode)
 
   /** Emitted when the form control has been checked for validity and its constraints aren't satisfied. */
-  lazy val onInvalid: EventProp[dom.Event] = eventProp("sl-invalid")
+  lazy val onInvalid: EnhancedEventProp[dom.Event, Int, Int] = eventProp("sl-invalid", IntAsIsCodec.decode)
 
 
   // -- Attributes --

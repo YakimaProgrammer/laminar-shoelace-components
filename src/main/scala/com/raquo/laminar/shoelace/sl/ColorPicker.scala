@@ -5,6 +5,7 @@ import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
 import com.raquo.laminar.tags.CustomHtmlTag
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -37,19 +38,19 @@ object ColorPicker extends WebComponent("sl-color-picker") with ControlledInput 
   // -- Events --
 
   /** Emitted when the color picker loses focus. */
-  lazy val onBlur: EventProp[dom.Event] = eventProp("sl-blur")
+  lazy val onBlur: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-blur", StringAsIsCodec.decode)
 
   /** Emitted when the color picker's value changes. */
-  lazy val onChange: EventProp[dom.Event] = eventProp("sl-change")
+  lazy val onChange: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-change", StringAsIsCodec.decode)
 
   /** Emitted when the color picker receives focus. */
-  lazy val onFocus: EventProp[dom.Event] = eventProp("sl-focus")
+  lazy val onFocus: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-focus", StringAsIsCodec.decode)
 
   /** Emitted when the color picker receives input. */
-  lazy val onInput: EventProp[dom.Event] = eventProp("sl-input")
+  lazy val onInput: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-input", StringAsIsCodec.decode)
 
   /** Emitted when the form control has been checked for validity and its constraints aren't satisfied. */
-  lazy val onInvalid: EventProp[dom.Event] = eventProp("sl-invalid")
+  lazy val onInvalid: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-invalid", StringAsIsCodec.decode)
 
 
   // -- Attributes --

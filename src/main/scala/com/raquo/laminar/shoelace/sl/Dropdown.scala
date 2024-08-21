@@ -3,6 +3,7 @@ package com.raquo.laminar.shoelace.sl
 import com.raquo.laminar.keys.{EventProp, HtmlAttr}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -29,18 +30,6 @@ object Dropdown extends WebComponent("sl-dropdown") {
 
 
   // -- Events --
-
-  /** Emitted when the dropdown opens. */
-  lazy val onShow: EventProp[dom.Event] = eventProp("sl-show")
-
-  /** Emitted after the dropdown opens and all animations are complete. */
-  lazy val onAfterShow: EventProp[dom.Event] = eventProp("sl-after-show")
-
-  /** Emitted when the dropdown closes. */
-  lazy val onHide: EventProp[dom.Event] = eventProp("sl-hide")
-
-  /** Emitted after the dropdown closes and all animations are complete. */
-  lazy val onAfterHide: EventProp[dom.Event] = eventProp("sl-after-hide")
 
 
   // -- Attributes --

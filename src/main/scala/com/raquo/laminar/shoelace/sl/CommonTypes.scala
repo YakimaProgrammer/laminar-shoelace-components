@@ -9,33 +9,9 @@ import com.raquo.laminar.keys.DerivedStyleProp
 import com.raquo.laminar.modifiers.KeySetter
 import com.raquo.laminar.modifiers.KeySetter.StyleSetter
 import org.scalajs.dom
-
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters._
-import com.raquo.laminar.keys.EventProcessor
 import scala.reflect.ClassTag
-
-class EnhancedEventProp[Ev <: dom.Event, ScalaVal, JsVal: ClassTag](name: String, f: JsVal => ScalaVal) extends EventProp[Ev](name) {
-  protected val asEventProcessor = EventProcessor.empty(this)
-
-  def mapToValue: EventProcessor[Ev, ScalaVal] = {
-    asEventProcessor.mapRaw((ev, _) => {
-      ev
-        .target
-        .asInstanceOf[js.Dynamic]
-        .selectDynamic("value")
-        .asInstanceOf[js.UndefOr[Any]]
-        .toOption
-        .collect { case v if implicitly[ClassTag[JsVal]].runtimeClass.isInstance(v) =>
-                     f(v.asInstanceOf[JsVal])
-        }
-    })
-  }
-
-  private def getClassTag[T: ClassTag](value: T): ClassTag[T] = {
-    implicitly[ClassTag[T]]
-  }
-}
 
 trait CommonTypes {
   protected lazy val StringSeperatedArrayCodec = (sep: String) => new Codec[Array[String], js.Array[String] | String] {
@@ -66,8 +42,9 @@ trait CommonTypes {
   //
   //private val stringAttrs = js.Dictionary[HtmlAttr[String]]()
 
-  protected def mappingEventProp[Ev <: dom.Event, ScalaVal, JsVal: ClassTag](name: String, f: JsVal => ScalaVal): EnhancedEventProp[Ev, ScalaVal, JsVal] = EnhancedEventProp(name, f)
-  protected def eventProp[Ev <: dom.Event](name: String): EventProp[Ev] = L.eventProp(name)
+  protected def eventProp[Ev <: dom.Event, ScalaVal, JsVal: ClassTag](name: String, f: JsVal => ScalaVal, whichDetailProp: String) = new EnhancedEventProp[Ev, ScalaVal, JsVal](name, f, _.selectDynamic("detail").selectDynamic(whichDetailProp))
+  protected def eventProp[Ev <: dom.Event, ScalaVal, JsVal: ClassTag](name: String, f: JsVal => ScalaVal): EnhancedEventProp[Ev, ScalaVal, JsVal] = EnhancedEventProp.valueProp(name, f)
+  protected def eventProp[Ev <: dom.Event](name: String): EventProp[Ev] = EnhancedEventProp.stringProp(name)
 
 
   protected def stringProp(name: String): HtmlProp[String, _] = L.htmlProp(name, StringAsIsCodec)

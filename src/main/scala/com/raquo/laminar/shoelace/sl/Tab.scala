@@ -3,6 +3,7 @@ package com.raquo.laminar.shoelace.sl
 import com.raquo.laminar.keys.{EventProp, HtmlAttr}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -29,9 +30,6 @@ object Tab extends WebComponent("sl-tab") {
 
 
   // -- Events --
-
-  /** Emitted when the tab is closable and the close button is activated. */
-  lazy val onClose: EventProp[dom.Event] = eventProp("sl-close")
 
 
   // -- Attributes --

@@ -5,6 +5,7 @@ import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -33,10 +34,7 @@ object CopyButton extends WebComponent("sl-copy-button") {
   // -- Events --
 
   /** Emitted when the data has been copied. */
-  lazy val onCopy: EventProp[CopyEvent] = eventProp("sl-copy")
-
-  /** Emitted when the data could not be copied. */
-  lazy val onError: EventProp[ErrorEvent] = eventProp("sl-error")
+  lazy val onCopy: EnhancedEventProp[CopyEvent, String, String] = eventProp("sl-copy", StringAsIsCodec.decode, "value")
 
 
   // -- Attributes --

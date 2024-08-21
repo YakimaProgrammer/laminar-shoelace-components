@@ -4,6 +4,7 @@ import com.raquo.laminar.keys.{EventProp}
 import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -31,8 +32,6 @@ object Menu extends WebComponent("sl-menu") {
 
   // -- Events --
 
-  /** Emitted when a menu item is selected. */
-  lazy val onSelect: EventProp[SelectEvent] = eventProp("sl-select")
 
 
   // -- Attributes --

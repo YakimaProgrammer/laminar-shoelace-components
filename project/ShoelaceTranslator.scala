@@ -557,8 +557,8 @@ class ShoelaceTranslator(
     }
   }
 
-  def scalaPropInputTypeStr(prop: Def.Field, tagName: String): String = {
-    val printableTypes = prop.jsTypes
+  def scalaPropInputTypeStr(propName: String, jsTypes: List[Def.JsType], tagName: String): String = {
+    val printableTypes = jsTypes
       .map {
         case Def.JsStringConstantType(_) => Def.JsStringType
         case other => other
@@ -570,7 +570,7 @@ class ShoelaceTranslator(
         case _ => true
       }
     if (printableTypes.isEmpty) {
-      throw new Exception(s"ERROR: scalaPropInputTypeStr: No printable types for prop `${prop.propName}` in tag `${tagName}` (jsTypes = ${prop.jsTypes.mkString(", ")})")
+      throw new Exception(s"ERROR: scalaPropInputTypeStr: No printable types for prop `${propName}` in tag `${tagName}` (jsTypes = ${jsTypes.mkString(", ")})")
     } else if (printableTypes.length == 1) {
       printableTypes.head match {
         case Def.JsStringType => "String"
@@ -581,7 +581,7 @@ class ShoelaceTranslator(
         //case Def.JsCustomType("Element") => "elementProp" // #nc need custom codec
         //case Def.JsCustomType(c) => c
         case t =>
-          println(s"WARNING: scalaPropInputTypeStr: Unhandled js type `${t}` for prop `${prop.propName}` in tag `${tagName}`.")
+          println(s"WARNING: scalaPropInputTypeStr: Unhandled js type `${t}` for prop `${propName}` in tag `${tagName}`.")
           t.toString
       }
       //} else if (printableTypes == List(Def.JsCustomType("Element"), Def.JsCustomType("Element[]"))) {
@@ -593,7 +593,7 @@ class ShoelaceTranslator(
       } else if (printableTypes.toSet == Set(Def.JsCustomType("string[]"), Def.JsStringType)) {
         "Array[String]"
       } else {
-        throw new Exception(s"ERROR: scalaPropInputTypeStr does not support multiple printable types in prop `${prop.propName}` in tag `${tagName}`: ${printableTypes.mkString(", ")}")
+        throw new Exception(s"ERROR: scalaPropInputTypeStr does not support multiple printable types in prop `${propName}` in tag `${tagName}`: ${printableTypes.mkString(", ")}")
       }
     }
   }

@@ -5,6 +5,7 @@ import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -33,10 +34,10 @@ object TabGroup extends WebComponent("sl-tab-group") {
   // -- Events --
 
   /** Emitted when a tab is shown. */
-  lazy val onTabShow: EventProp[TabShowEvent] = eventProp("sl-tab-show")
+  lazy val onTabShow: EnhancedEventProp[TabShowEvent, String, String] = eventProp("sl-tab-show", StringAsIsCodec.decode, "name")
 
   /** Emitted when a tab is hidden. */
-  lazy val onTabHide: EventProp[TabHideEvent] = eventProp("sl-tab-hide")
+  lazy val onTabHide: EnhancedEventProp[TabHideEvent, String, String] = eventProp("sl-tab-hide", StringAsIsCodec.decode, "name")
 
 
   // -- Attributes --

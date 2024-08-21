@@ -5,6 +5,7 @@ import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -32,11 +33,6 @@ object AnimatedImage extends WebComponent("sl-animated-image") {
 
   // -- Events --
 
-  /** Emitted when the image loads successfully. */
-  lazy val onLoad: EventProp[dom.Event] = eventProp("sl-load")
-
-  /** Emitted when the image fails to load. */
-  lazy val onError: EventProp[ErrorEvent] = eventProp("sl-error")
 
 
   // -- Attributes --

@@ -3,6 +3,7 @@ package com.raquo.laminar.shoelace.sl
 import com.raquo.laminar.keys.{EventProp, HtmlAttr}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -29,24 +30,6 @@ object TreeItem extends WebComponent("sl-tree-item") {
 
 
   // -- Events --
-
-  /** Emitted when the tree item expands. */
-  lazy val onExpand: EventProp[dom.Event] = eventProp("sl-expand")
-
-  /** Emitted after the tree item expands and all animations are complete. */
-  lazy val onAfterExpand: EventProp[dom.Event] = eventProp("sl-after-expand")
-
-  /** Emitted when the tree item collapses. */
-  lazy val onCollapse: EventProp[dom.Event] = eventProp("sl-collapse")
-
-  /** Emitted after the tree item collapses and all animations are complete. */
-  lazy val onAfterCollapse: EventProp[dom.Event] = eventProp("sl-after-collapse")
-
-  /** Emitted when the tree item's lazy state changes. */
-  lazy val onLazyChange: EventProp[dom.Event] = eventProp("sl-lazy-change")
-
-  /** Emitted when a lazy item is selected. Use this event to asynchronously load data and append items to the tree before expanding. After appending new items, remove the `lazy` attribute to remove the loading state and update the tree. */
-  lazy val onLazyLoad: EventProp[dom.Event] = eventProp("sl-lazy-load")
 
 
   // -- Attributes --

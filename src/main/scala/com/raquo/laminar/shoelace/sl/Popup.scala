@@ -4,6 +4,7 @@ import com.raquo.laminar.keys.{EventProp, HtmlAttr, StyleProp}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -30,9 +31,6 @@ object Popup extends WebComponent("sl-popup") {
 
 
   // -- Events --
-
-  /** Emitted when the popup is repositioned. This event can fire a lot, so avoid putting expensive operations in your listener or consider debouncing it. */
-  lazy val onReposition: EventProp[dom.Event] = eventProp("sl-reposition")
 
 
   // -- Attributes --

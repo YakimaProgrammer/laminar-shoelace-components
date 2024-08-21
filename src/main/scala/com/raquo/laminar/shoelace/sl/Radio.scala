@@ -3,6 +3,7 @@ package com.raquo.laminar.shoelace.sl
 import com.raquo.laminar.keys.{EventProp, HtmlProp, HtmlAttr}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -31,10 +32,10 @@ object Radio extends WebComponent("sl-radio") {
   // -- Events --
 
   /** Emitted when the control loses focus. */
-  lazy val onBlur: EventProp[dom.Event] = eventProp("sl-blur")
+  lazy val onBlur: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-blur", StringAsIsCodec.decode)
 
   /** Emitted when the control gains focus. */
-  lazy val onFocus: EventProp[dom.Event] = eventProp("sl-focus")
+  lazy val onFocus: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-focus", StringAsIsCodec.decode)
 
 
   // -- Attributes --

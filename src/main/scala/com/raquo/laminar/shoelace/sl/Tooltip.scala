@@ -4,6 +4,7 @@ import com.raquo.laminar.keys.{EventProp, HtmlAttr, StyleProp}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -30,18 +31,6 @@ object Tooltip extends WebComponent("sl-tooltip") {
 
 
   // -- Events --
-
-  /** Emitted when the tooltip begins to show. */
-  lazy val onShow: EventProp[dom.Event] = eventProp("sl-show")
-
-  /** Emitted after the tooltip has shown and all animations are complete. */
-  lazy val onAfterShow: EventProp[dom.Event] = eventProp("sl-after-show")
-
-  /** Emitted when the tooltip begins to hide. */
-  lazy val onHide: EventProp[dom.Event] = eventProp("sl-hide")
-
-  /** Emitted after the tooltip has hidden and all animations are complete. */
-  lazy val onAfterHide: EventProp[dom.Event] = eventProp("sl-after-hide")
 
 
   // -- Attributes --

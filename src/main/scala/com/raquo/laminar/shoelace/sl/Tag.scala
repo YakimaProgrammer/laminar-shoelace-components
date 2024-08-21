@@ -3,6 +3,7 @@ package com.raquo.laminar.shoelace.sl
 import com.raquo.laminar.keys.{EventProp, HtmlAttr}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -29,9 +30,6 @@ object Tag extends WebComponent("sl-tag") {
 
 
   // -- Events --
-
-  /** Emitted when the remove button is activated. */
-  lazy val onRemove: EventProp[dom.Event] = eventProp("sl-remove")
 
 
   // -- Attributes --

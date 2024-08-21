@@ -288,10 +288,11 @@ class ShoelaceGenerator(
       line("import com.raquo.laminar.tags.CustomHtmlTag")
     }
 
-    val codec = element.allJsProperties.find(_.propName == "value").map(t => st.propCodec(element.tagName, st.scalaPropOutputType(element.tagName, t.jsTypes))).flatMap(_.split('(').headOption)
-    if (codec.isDefined) {
-      line(s"import com.raquo.laminar.codecs.${codec.get}")
-    }
+    //val codec = element.allJsProperties.find(_.propName == "value").map(t => st.propCodec(element.tagName, st.scalaPropOutputType(element.tagName, t.jsTypes))).flatMap(_.split('(').headOption)
+    //if (codec.isDefined) {
+    //  line(s"import com.raquo.laminar.codecs.${codec.get}")
+    //}
+    line(s"import com.raquo.laminar.codecs.*")
     line("import org.scalajs.dom")
     line()
     line("import scala.scalajs.js")
@@ -336,44 +337,71 @@ class ShoelaceGenerator(
     line()
     line("// -- Events --")
     element.events.foreach { event =>
-      val prop = element.allJsProperties.find(_.propName == "value")
-      val codec = element.allJsProperties.find(_.propName == "value").map(t => st.propCodec(element.tagName, st.scalaPropOutputType(element.tagName, t.jsTypes)))
+      // I would like to abstract away the three main kinds of events that shoelace can receive to a clean .mapToValue call
+      val (scalaTypeOption, jsTypeOption, codecOption, customEventPropNameOption): (Option[String], Option[String], Option[String], Option[String]) = {
+        event.customType match {
+          case Some(customType) => {
+            val field = customType.fields match {
+              case List(first) => Some(first)
+              case elems => elems.collectFirst { case field if field.domName == "index" || field.domName == "value" => field }
+            }
+
+            val jsType = field.map(f => st.scalaPropOutputType(element.tagName, f.jsTypes))
+            (
+              field.map(f => st.scalaPropInputTypeStr(f.scalaName, f.jsTypes, element.tagName)),
+              jsType,
+              jsType.map(t => st.propCodec(element.tagName, t)),
+              field.map(_.domName)
+            )
+          }
+
+          case None => {
+            val field = element.allJsProperties.find(_.propName == "value")
+
+            val jsType = field.map(f => st.scalaPropOutputType(element.tagName, f.jsTypes))
+            (
+              field.map(f => st.scalaPropInputTypeStr(f.propName, f.jsTypes, element.tagName)),
+              jsType,
+              jsType.map(t => st.propCodec(element.tagName, t)),
+              None
+            )
+          }
+        }
+      }
       val customEventTypeDef = event.customType
       val eventType = customEventTypeDef.map(_.scalaName).getOrElse(st.baseEventType)
 
-      val builder = new StringBuilder()
-      builder ++= "lazy val "
-      builder ++= event.scalaName
-      builder ++= ": "
-      if (codec.isEmpty) {
-        builder ++= "EventProp"
-      } else {
-        builder ++= "EnhancedEventProp"
-      }
-      builder += '['
-      builder ++= eventType
-      if (codec.isDefined) {
+      for {
+        scalaType <- scalaTypeOption
+        jsType <- jsTypeOption
+        codec <- codecOption.map(c => if (c == "AsIsCodec") {s"$c()"} else {c})
+      } {
+        val builder = new StringBuilder()
+        builder ++= "lazy val "
+        builder ++= event.scalaName
+        builder ++= ": EnhancedEventProp["
+        builder ++= eventType
         builder ++= ", "
-        builder ++= st.scalaPropInputTypeStr(prop.get, element.tagName)
-        builder ++= ", _"
-      }
-      builder ++= "] = "
-      if (codec.isEmpty) {
-        builder ++= "eventProp("
-      } else {
-        builder ++= "mappingEventProp("
-      }
-      builder ++= repr(event.domName)
-      if (codec.isDefined) {
+        builder ++= scalaType
         builder ++= ", "
-        builder ++= codec.get
+        builder ++= jsType
+        builder ++= "] = eventProp("
+        builder ++= repr(event.domName)
+        builder ++= ", "
+        builder ++= codec
         builder ++= ".decode"
-      }
-      builder += ')'
+        if (customEventPropNameOption.isDefined) {
+          builder ++= ", \""
+          builder ++= customEventPropNameOption.get
+          builder ++= "\")"
+        } else {
+          builder += ')'
+        }
 
-      line()
-      blockCommentLines(event.description)
-      line(builder.toString)
+        line()
+        blockCommentLines(event.description)
+        line(builder.toString)
+      }
     }
   }
 
@@ -409,7 +437,7 @@ class ShoelaceGenerator(
     line("// -- Props --")
     element.writableNonReflectedProperties.foreach { prop =>
       line()
-      val scalaInputTypeStr = st.scalaPropInputTypeStr(prop, element.tagName)
+      val scalaInputTypeStr = st.scalaPropInputTypeStr(prop.propName, prop.jsTypes, element.tagName)
       val propImpl = st.useUiLibraryProp(element.tagName, prop.propName, prop.jsTypes) match {
         case Some(uiLibraryScalaName) => s"L.$uiLibraryScalaName"
         case None => s"${propImplName(element.tagName, scalaInputTypeStr)}(${repr(prop.propName)})"

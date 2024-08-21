@@ -4,6 +4,7 @@ import com.raquo.laminar.keys.{EventProp, HtmlProp, HtmlAttr}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
 import com.raquo.laminar.tags.CustomHtmlTag
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -36,34 +37,34 @@ object Select extends WebComponent("sl-select") with ControlledInput {
   // -- Events --
 
   /** Emitted when the control's value changes. */
-  lazy val onChange: EventProp[dom.Event] = eventProp("sl-change")
+  lazy val onChange: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-change", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted when the control's value is cleared. */
-  lazy val onClear: EventProp[dom.Event] = eventProp("sl-clear")
+  lazy val onClear: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-clear", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted when the control receives input. */
-  lazy val onInput: EventProp[dom.Event] = eventProp("sl-input")
+  lazy val onInput: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-input", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted when the control gains focus. */
-  lazy val onFocus: EventProp[dom.Event] = eventProp("sl-focus")
+  lazy val onFocus: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-focus", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted when the control loses focus. */
-  lazy val onBlur: EventProp[dom.Event] = eventProp("sl-blur")
+  lazy val onBlur: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-blur", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted when the select's menu opens. */
-  lazy val onShow: EventProp[dom.Event] = eventProp("sl-show")
+  lazy val onShow: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-show", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted after the select's menu opens and all animations are complete. */
-  lazy val onAfterShow: EventProp[dom.Event] = eventProp("sl-after-show")
+  lazy val onAfterShow: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-after-show", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted when the select's menu closes. */
-  lazy val onHide: EventProp[dom.Event] = eventProp("sl-hide")
+  lazy val onHide: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-hide", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted after the select's menu closes and all animations are complete. */
-  lazy val onAfterHide: EventProp[dom.Event] = eventProp("sl-after-hide")
+  lazy val onAfterHide: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-after-hide", StringSeperatedArrayCodec(" ").decode)
 
   /** Emitted when the form control has been checked for validity and its constraints aren't satisfied. */
-  lazy val onInvalid: EventProp[dom.Event] = eventProp("sl-invalid")
+  lazy val onInvalid: EnhancedEventProp[dom.Event, Array[String], String | js.Array[String]] = eventProp("sl-invalid", StringSeperatedArrayCodec(" ").decode)
 
 
   // -- Attributes --

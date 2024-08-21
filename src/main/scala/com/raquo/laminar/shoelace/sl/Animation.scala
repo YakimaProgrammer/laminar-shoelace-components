@@ -3,6 +3,7 @@ package com.raquo.laminar.shoelace.sl
 import com.raquo.laminar.keys.{EventProp, HtmlProp, HtmlAttr}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -29,15 +30,6 @@ object Animation extends WebComponent("sl-animation") {
 
 
   // -- Events --
-
-  /** Emitted when the animation is canceled. */
-  lazy val onCancel: EventProp[dom.Event] = eventProp("sl-cancel")
-
-  /** Emitted when the animation finishes. */
-  lazy val onFinish: EventProp[dom.Event] = eventProp("sl-finish")
-
-  /** Emitted when the animation starts or restarts. */
-  lazy val onStart: EventProp[dom.Event] = eventProp("sl-start")
 
 
   // -- Attributes --

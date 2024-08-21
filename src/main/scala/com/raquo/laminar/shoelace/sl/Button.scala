@@ -3,6 +3,7 @@ package com.raquo.laminar.shoelace.sl
 import com.raquo.laminar.keys.{EventProp, HtmlProp, HtmlAttr}
 import com.raquo.laminar.api.L
 import com.raquo.laminar.nodes.Slot
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -31,13 +32,13 @@ object Button extends WebComponent("sl-button") {
   // -- Events --
 
   /** Emitted when the button loses focus. */
-  lazy val onBlur: EventProp[dom.Event] = eventProp("sl-blur")
+  lazy val onBlur: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-blur", StringAsIsCodec.decode)
 
   /** Emitted when the button gains focus. */
-  lazy val onFocus: EventProp[dom.Event] = eventProp("sl-focus")
+  lazy val onFocus: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-focus", StringAsIsCodec.decode)
 
   /** Emitted when the form control has been checked for validity and its constraints aren't satisfied. */
-  lazy val onInvalid: EventProp[dom.Event] = eventProp("sl-invalid")
+  lazy val onInvalid: EnhancedEventProp[dom.Event, String, String] = eventProp("sl-invalid", StringAsIsCodec.decode)
 
 
   // -- Attributes --

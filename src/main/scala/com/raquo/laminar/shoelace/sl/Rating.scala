@@ -4,6 +4,7 @@ import com.raquo.laminar.keys.{EventProp, HtmlProp, HtmlAttr, StyleProp}
 import com.raquo.laminar.shoelace.sl.EventTypes.*
 import com.raquo.laminar.api.L
 import com.raquo.laminar.defs.styles.{traits as s, units as u}
+import com.raquo.laminar.codecs.*
 import org.scalajs.dom
 
 import scala.scalajs.js
@@ -32,10 +33,10 @@ object Rating extends WebComponent("sl-rating") {
   // -- Events --
 
   /** Emitted when the rating's value changes. */
-  lazy val onChange: EventProp[dom.Event] = eventProp("sl-change")
+  lazy val onChange: EnhancedEventProp[dom.Event, Int, Int] = eventProp("sl-change", IntAsIsCodec.decode)
 
   /** Emitted when the user hovers over a value. The `phase` property indicates when hovering starts, moves to a new value, or ends. The `value` property tells what the rating's value would be if the user were to commit to the hovered value. */
-  lazy val onHover: EventProp[HoverEvent] = eventProp("sl-hover")
+  lazy val onHover: EnhancedEventProp[HoverEvent, Int, Int] = eventProp("sl-hover", IntAsIsCodec.decode, "value")
 
 
   // -- Attributes --
