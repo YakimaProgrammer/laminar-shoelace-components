@@ -32,11 +32,13 @@ object Rating extends WebComponent("sl-rating") {
 
   // -- Events --
 
+  private def byteToInt(b: java.lang.Byte): Int = b.intValue()
+  
   /** Emitted when the rating's value changes. */
-  lazy val onChange: EnhancedEventProp[dom.Event, Int, Int] = eventProp("sl-change", IntAsIsCodec.decode)
+  lazy val onChange: EnhancedEventProp[dom.Event, Int, java.lang.Byte] = eventProp("sl-change", byteToInt)
 
   /** Emitted when the user hovers over a value. The `phase` property indicates when hovering starts, moves to a new value, or ends. The `value` property tells what the rating's value would be if the user were to commit to the hovered value. */
-  lazy val onHover: EnhancedEventProp[HoverEvent, Int, Int] = eventProp("sl-hover", IntAsIsCodec.decode, "value")
+  lazy val onHover: EnhancedEventProp[HoverEvent, Int, java.lang.Byte] = eventProp("sl-hover", byteToInt, "value")
 
 
   // -- Attributes --
